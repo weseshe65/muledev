@@ -1,0 +1,187 @@
+Useful Links
+============
+
+Maven
+-----
+https://maven.apache.org/guides/getting-started/index.html
+https://maven.apache.org/guides/getting-started/maven-in-five-minutes.html
+https://www.baeldung.com/maven
+
+
+
+
+Cloudshare
+----------
+URL:				https://use.cloudshare.com/Class/r7uyk
+PassPhrase:	I Love APIs	
+
+
+Important Maven Commands
+------------------------
+mvn clean install
+mvn clean
+mvn clean verify
+mvn clean verify -U -Dencrypt.key=secure12345
+mvn install:install-file -Dfile=parent-pom/pom.xml -DpomFile=parent-pom/pom.xml
+mvn install:install-file -Dfile=bom/pom.xml -DpomFile=bom/pom.xml
+mvn clean verify -U -Dencrypt.key=secure12345 -DskipMunitTests
+
+Day 1
+=====
+
+install poms into .m2 local repo
+--------------------------------
+mvn install:install-file -Dfile=bom/pom.xml -DpomFile=bom/pom.xml
+
+Studio Runtime Confiruration
+----------------------------
+-M-Dencrypt.key=secure12345
+-M-Danypoint.platform.gatekeeper=disabled
+
+check-in
+--------
+PUT
+https://localhost:8081/api/v1/tickets/PNR123/checkin
+body
+----
+{ 
+	"lastName": "Smith", 
+	"numBags": 2 
+}
+
+payment approval
+----------------
+PUT
+https://localhost:8081/api/v1/tickets/PNR123/paymentApproval
+
+body
+----
+{ 
+	"payerID": "PID1", 
+	"paymentID": "PMT1" 
+}
+
+
+availability check
+------------------
+https://tngaa-flights-management-sapi-dev-9yj2rh.rajrd4-2.usa-e1.cloudhub.io/alive
+https://tngaa-passenger-data-sapi-dev-9yj2rh.rajrd4-2.usa-e1.cloudhub.io/alive
+https://tngaa-paypal-sapi-dev-9yj2rh.rajrd4-2.usa-e1.cloudhub.io/alive
+
+flightsManagementSapiConfig
+host:     tngaa-flights-management-sapi-dev-9yj2rh.rajrd4-2.usa-e1.cloudhub.io
+basePath: /api/v1
+username: e66105d66e8b4520b091127620221cce
+password: A1c099D51C50420b84641D71b229EBac
+
+passengerDataSapiConfig
+-----------------------
+host:     tngaa-passenger-data-sapi-dev-9yj2rh.rajrd4-2.usa-e1.cloudhub.io
+basePath: /api/v1
+
+paypalSapiConfig
+----------------
+host:     tngaa-paypal-sapi-dev-9yj2rh.rajrd4-2.usa-e1.cloudhub.io
+basePath: /api/v1
+
+%dw 2.0
+output application/json
+---
+{
+	lastName:	vars.checkIn.lastName,
+	numBags:	vars.checkIn.numBags
+}
+
+/tickets/{PNR}/checkin
+
+************ global.xml **************
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  #%L
+  MuleSoft Training - Anypoint Platform Development: Level 2
+  %%
+  Copyright (C) 2019 - 2021 MuleSoft, Inc. All rights reserved. http://www.mulesoft.com
+  %%
+  The software in this package is published under the terms of the
+  Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International Public License,
+  a copy of which has been included with this distribution in the LICENSE.txt file.
+  #L%
+  -->
+<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:secure-properties="http://www.mulesoft.org/schema/mule/secure-properties" xmlns:api-gateway="http://www.mulesoft.org/schema/mule/api-gateway" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:tls="http://www.mulesoft.org/schema/mule/tls" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="  http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd  http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd  http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd  http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd  http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/mule/api-gateway/current/mule-api-gateway.xsd  http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd  http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/schema/mule/secure-properties/current/mule-secure-properties.xsd  ">
+  <global-property name="env" value="dev" doc:name="Default env to dev"/>
+  <!-- 1st def of a property is preserved, so env-dependent takes priority over env-independent -->
+  <configuration-properties file="${env}-properties.yaml" doc:name="Env Config Props"/>
+  <secure-properties:config file="${env}-secure-properties.yaml" key="${encrypt.key}" name="secureEnvPropsConfig" doc:name="Secure Env Config Props">
+    <secure-properties:encrypt algorithm="Blowfish"/>
+  </secure-properties:config>
+  <configuration-properties file="properties.yaml" doc:name="Config Props"/>
+  <tls:context name="apiTLSContext" doc:name="TLS Context">
+    <tls:key-store type="${tls.keystore.type}" path="${tls.keystore.path}" password="${secure::tls.keystore.password}" keyPassword="${secure::tls.keystore.keyPassword}" alias="${tls.keystore.alias}"/>
+  </tls:context>
+  <http:listener-config name="apiHttpListenerConfig" doc:name="API Listener HTTP Config">
+    <http:listener-connection host="0.0.0.0" protocol="HTTPS" port="${https.port}" tlsContext="apiTLSContext"/>
+  </http:listener-config>
+  <apikit:config name="apiConfig" api="${api.spec}" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" doc:name="APIKit Config"/>
+  <api-gateway:autodiscovery apiId="${api.id}" flowRef="api-main" doc:name="API Autodiscovery"/>
+	<http:request-config name="flightsManagementSapiConfig" doc:name="HTTP Request configuration" doc:id="2039e6b2-2717-414a-8163-6852ca8dbc7c" basePath="/api/v1" >
+		<http:request-connection protocol="HTTPS" host="tngaa-flights-management-sapi-dev-9yj2rh.rajrd4-2.usa-e1.cloudhub.io" >
+			<http:authentication >
+				<http:basic-authentication username="e66105d66e8b4520b091127620221cce" password="A1c099D51C50420b84641D71b229EBac" />
+			</http:authentication>
+		</http:request-connection>
+	</http:request-config>
+	<http:request-config name="passengerDataSapiConfig" doc:name="HTTP Request configuration" doc:id="f8cb4446-2bea-4246-abe3-f1c33c7add38" basePath="/api/v1" >
+		<http:request-connection protocol="HTTPS" host="tngaa-passenger-data-sapi-dev-9yj2rh.rajrd4-2.usa-e1.cloudhub.io" >
+			<http:authentication >
+				<http:basic-authentication username="e66105d66e8b4520b091127620221cce" password="A1c099D51C50420b84641D71b229EBac" />
+			</http:authentication>
+		</http:request-connection>
+	</http:request-config>
+	<http:request-config name="paypalSapiConfig" doc:name="HTTP Request configuration" doc:id="b442b672-82de-49d1-8372-9c0ed9702686" basePath="/api/v1" >
+		<http:request-connection protocol="HTTPS" host=" tngaa-paypal-sapi-dev-9yj2rh.rajrd4-2.usa-e1.cloudhub.io" >
+			<http:authentication >
+				<http:basic-authentication username="e66105d66e8b4520b091127620221cce" password="A1c099D51C50420b84641D71b229EBac" />
+			</http:authentication>
+		</http:request-connection>
+	</http:request-config>
+
+</mule>
+
+**************************************
+
+************** check-in-flights-management ***************
+
+<flow name="check-in-flights-management">
+		<ee:transform doc:name="Transform Message" doc:id="3b9cf08a-f330-48b0-a9c5-7a1741b596b3" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	lastName:	vars.checkIn.lastName,
+	numBags:	vars.checkIn.numBags
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<http:request method="PUT" doc:name="checkIn" doc:id="ea202fa7-c54f-4cd3-a3ad-5a66973d6eaf" config-ref="flightsManagementSapiConfig" path="/tickets/{PNR}/checkin">
+			<http:uri-params ><![CDATA[#[output application/java
+---
+{
+	PNR : vars.PNR
+}]]]></http:uri-params>
+		</http:request>
+
+  </flow>
+
+
+**********************************************************
+
+
+Day 2
+=====
+  
+Day 3
+=====
+  
+Day 4
