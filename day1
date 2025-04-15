@@ -456,7 +456,12 @@ var bagRate = 35
 
 </mule>
 
-
+POST
+https://localhost:8081/api/v1/payments	
+{
+    "amount": 12.34,
+    "description": "something"
+}
 
 Day 3
 =====
