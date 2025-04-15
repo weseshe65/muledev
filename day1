@@ -463,6 +463,14 @@ https://localhost:8081/api/v1/payments
     "description": "something"
 }
 
+
+PUT
+https://localhost:8081/api/v1/payments/PAY-1B56960729604235TKQQIYVY/approval
+{
+    "payerID": "STJ8222K092ST"
+}
+
+
 Day 3
 =====
   
