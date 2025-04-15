@@ -476,7 +476,16 @@ curl -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer 48
 
 https://tngaa-flights-management-devx-9yj2rh.d5n5q8.usa-e1.cloudhub.io/api/v1/FlightsManagementService?wsdl
 
-Day 3
+output application/xml
+ns ns0 http://flightsMgmt.sword.com/
+---
+{
+	ns0#checkIn: {
+		pnr: 				vars.PNR,
+		passengerLastName: 	payload.lastName,
+		numOfBags: 			payload.numBags
+	}
+}
 
 Day 3
 =====
