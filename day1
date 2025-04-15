@@ -491,6 +491,9 @@ ns ns0 http://flightsMgmt.sword.com/
 
 output application/java --- payload.body.checkInResponse.return as Boolean
 
+https://tngaa-flights-management-devx.nonprod-internalps.anyair.net/api/v1/FlightsManagementService?wsdl
+
+
 Day 3
 =====
   
