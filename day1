@@ -94,7 +94,314 @@ output application/json
 
 /tickets/{PNR}/checkin
 
-************ global.xml **************
+Day 2
+=====
+
+vars.ticket.ticketHolderPassPortNo
+
+not vars.ticket.ticketHolderLastName == vars.checkIn.lastName
+
+APP:LASTNAME_MISMATCH
+
+not vars.passenger.lastName == vars.checkIn.lastName
+  
+output application/json
+---
+{
+	errorMessage: "Invalid passenger name or bad data uploaded"
+}  
+  
+APP:CANT_UPDATE_CHECKINS  
+  
+%dw 2.0
+output application/json
+---
+{
+	date_checkin:	now() >> "UTC",
+	destination:	vars.ticket.destination,
+	flight_date:	vars.ticket.flightDate,
+	flight_no:		vars.ticket.flightNo,
+	origin:			vars.ticket.origin
+}  
+
+vars.passenger.loyaltyNo
+
+APP:CANT_CREATE_PASSENGER_FLIGHT
+
+%dw 2.0
+output application/json
+var numBags = vars.checkIn.numBags
+var bagRate = 35
+---
+{
+	description:	"Check-In of $( numBags as String ) bags at EUR $( bagRate ) each.",
+	amount:			bagRate * ( numBags as Number )
+}
+
+%dw 2.0
+output application/json
+var paypalReturn = payload
+---
+{
+  paymentID: paypalReturn.paymentID
+}
+
+---------------------------- main.xml ------------------------------
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  #%L
+  MuleSoft Training - Anypoint Platform Development: Level 2
+  %%
+  Copyright (C) 2019 - 2021 MuleSoft, Inc. All rights reserved. http://www.mulesoft.com
+  %%
+  The software in this package is published under the terms of the
+  Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International Public License,
+  a copy of which has been included with this distribution in the LICENSE.txt file.
+  #L%
+  -->
+<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:api-gateway="http://www.mulesoft.org/schema/mule/api-gateway" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:tls="http://www.mulesoft.org/schema/mule/tls" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:tracing="http://www.mulesoft.org/schema/mule/tracing" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="  http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd  http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd  http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd  http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd  http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/mule/api-gateway/current/mule-api-gateway.xsd  http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd   http://www.mulesoft.org/schema/mule/tracing http://www.mulesoft.org/schema/mule/tracing/current/mule-tracing.xsd">
+  <flow name="check-in-by-pnr">
+    <tracing:set-logging-variable variableName="PNR" value="#[vars.PNR default '']" doc:name="Set PNR tracing var"/>
+    <logger level="INFO" message="#['Checking-in by PNR: ' ++ (vars.PNR default '')]" doc:name="START"/>
+    <set-variable variableName="checkIn" value="#[payload]" doc:name="checkIn"/>
+    <flow-ref doc:name="validate-ticket-passport-matches" doc:id="d97697fe-2cb6-4a7b-b3cf-a9f8f8772357" name="validate-ticket-passport-matches"/>
+		<flow-ref name="check-in-flights-management" doc:name="check-in-flights-management"/>
+    <flow-ref name="register-passenger-data" doc:name="register-passenger-data"/>
+    <flow-ref name="create-payment-for-bags" doc:name="create-payment-for-bags"/>
+    <ee:transform>
+      <ee:message>
+        <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+var paypalReturn = payload
+---
+{
+  paymentID: paypalReturn.paymentID
+}]]></ee:set-payload>
+      </ee:message>
+    </ee:transform>
+    <logger level="INFO" message="Checked-in by PNR" doc:name="END"/>
+  </flow>
+  <flow name="validate-ticket-passport-matches" doc:id="6d3fff32-2b3c-4a14-b733-ac565ed42375" >
+		<flow-ref doc:name="get-ticket-by-pnr" doc:id="36b6e691-ad5c-49b3-9dcf-3f722335a3d5" name="get-ticket-by-pnr"/>
+		<choice doc:name="Choice" doc:id="99119a6f-46d8-44e7-b9bc-b7e7ce50f9cc" >
+			<when expression="#[not lower( vars.ticket.ticketHolderLastName ) == lower( vars.checkIn.lastName )]">
+				<raise-error doc:name="APP:LASTNAME_MISMATCH" doc:id="9036588b-b130-485d-b16c-bdc15e2cc1b6" type="APP:LASTNAME_MISMATCH"/>
+			</when>
+		</choice>
+		<flow-ref doc:name="get-passenger-data-by-passport" doc:id="377db78f-deda-4da3-a65c-99279ff3c8b1" name="get-passenger-data-by-passport"/>
+		<choice doc:name="Choice" doc:id="89f6e3b6-a129-4086-991d-7815778f3289" >
+			<when expression="#[not lower( vars.passenger.lastName ) == lower( vars.checkIn.lastName )]">
+				<raise-error doc:name="APP:LASTNAME_MISMATCH" doc:id="a1b4c5d0-edbb-4578-b528-cefe3d0df4eb" type="APP:LASTNAME_MISMATCH" />
+			</when>
+		</choice>
+	</flow>
+	<flow name="get-ticket-by-pnr" doc:id="d127c2af-d638-444b-8040-7bfe63519376" >
+		<http:request method="GET" doc:name="Petrieve Ticket GET /ticket/{PNR}" doc:id="5a6f9ec7-7681-4b3e-af3b-52fd0d9d60b8" config-ref="flightsManagementSapiConfig" path="/tickets/{PNR}" target="ticket">
+			<http:uri-params ><![CDATA[#[output application/java
+---
+{
+	PNR : vars.PNR
+}]]]></http:uri-params>
+		</http:request>
+	</flow>
+	<flow name="get-passenger-data-by-passport" doc:id="0f2f652b-3c6c-4782-90af-b369908e35ff" >
+		<http:request method="GET" doc:name="Retrieve Passenger by Passport GET /passengers" doc:id="87ee1cad-27b9-484a-aa6b-83d2fa677500" path="/passengers" config-ref="passengerDataSapiConfig" target="passenger">
+			<http:query-params ><![CDATA[#[output application/java
+---
+{
+	passportNo : vars.ticket.ticketHolderPassPortNo
+}]]]></http:query-params>
+		</http:request>
+	</flow>
+	<flow name="check-in-flights-management">
+		<ee:transform doc:name="Transform Message" doc:id="3b9cf08a-f330-48b0-a9c5-7a1741b596b3" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	lastName:	vars.checkIn.lastName,
+	numBags:	vars.checkIn.numBags
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<http:request method="PUT" doc:name="checkIn" doc:id="ea202fa7-c54f-4cd3-a3ad-5a66973d6eaf" config-ref="flightsManagementSapiConfig" path="/tickets/{PNR}/checkin">
+			<http:uri-params ><![CDATA[#[output application/java
+---
+{
+	PNR : vars.PNR
+}]]]></http:uri-params>
+		</http:request>
+		<error-handler >
+			<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="ff8abc03-8c90-4ceb-836c-e2741ac46139" >
+				<raise-error doc:name="APP:CANT_UPDATE_CHECKINS" doc:id="aefab36a-73f7-4926-bd6c-7f8c70c4a782" type="APP:CANT_UPDATE_CHECKINS"/>
+			</on-error-continue>
+		</error-handler>
+
+  </flow>
+  <flow name="register-passenger-data">
+		<ee:transform doc:name="Transform Message" doc:id="096ccf6a-0b7b-4fe7-8683-b11e50e8de09" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	date_checkin:	now() >> "UTC",
+	destination:	vars.ticket.destination,
+	flight_date:	vars.ticket.flightDate,
+	flight_no:		vars.ticket.flightNo,
+	origin:			vars.ticket.origin
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<http:request method="POST" doc:name="update passenger data POST /passengers/{LNO}/flights" doc:id="fdfd2a2d-6892-40b8-a2bf-73d6a40caab5" config-ref="passengerDataSapiConfig" path="/passengers/{LNO}/flights">
+			<http:uri-params ><![CDATA[#[output application/java
+---
+{
+	LNO : vars.passenger.loyaltyNo
+}]]]></http:uri-params>
+		</http:request>
+		<error-handler >
+			<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="ece103d7-f6cc-4884-b795-cf48e47c9033" >
+				<raise-error doc:name="APP:CANT_CREATE_PASSENGER_FLIGHT" doc:id="9c89055f-dd8f-47a4-b4dc-03293f9b63e7" type="APP:CANT_CREATE_PASSENGER_FLIGHT"/>
+			</on-error-continue>
+		</error-handler>
+
+  </flow>
+  <flow name="create-payment-for-bags">
+    <ee:transform doc:name="Transform Message" doc:id="e7a6a76f-4389-450b-a7e2-c30e24f7bbff" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+var numBags = vars.checkIn.numBags
+var bagRate = 35
+---
+{
+	description:	"Check-In of $( numBags as String ) bags at EUR $( bagRate ) each.",
+	amount:			bagRate * ( numBags as Number )
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<http:request method="POST" doc:name="Create payment for bags POST /payments" doc:id="841fefef-955f-4dd0-b806-87058ef65633" config-ref="paypalSapiConfig" path="/payments"/>
+		<error-handler>
+      <on-error-continue>
+        <raise-error type="APP:CANT_CREATE_PAYMENT"/>
+      </on-error-continue>
+    </error-handler>
+  </flow>
+  <flow name="payment-approval-by-pnr">
+    <logger level="INFO" message="#['Approving payment by PNR: ' ++ (vars.PNR default '')]" doc:name="START"/>
+    <flow-ref name="update-approvals" doc:name="update-approvals"/>
+    <flow-ref name="get-boarding-pass" doc:name="get-boarding-pass"/>
+    <logger level="INFO" message="Approved payment by PNR" doc:name="END"/>
+  </flow>
+  <flow name="update-approvals">
+    <ee:transform>
+      <ee:message>
+        <ee:set-payload><![CDATA[%dw 2.0
+                output application/json
+                ---
+                {
+                  status: "Payment Executed"
+                }]]></ee:set-payload>
+      </ee:message>
+    </ee:transform>
+  </flow>
+  <flow name="get-boarding-pass">
+    <ee:transform>
+      <ee:message>
+        <ee:set-payload><![CDATA[%dw 2.0
+                output application/json
+                ---
+                {
+                  PNR: "928382J",
+                  airportArrive: "SFO",
+                  class: "Economy",
+                  bagsCount: 2,
+                  lastName: "Smith",
+                  seat: "16C",
+                  flightDate: "2019-02-14",
+                  flight: "ANY6584",
+                  boarding: "13:15:00",
+                  airportDepart: "ATL",
+                  gate: "4A",
+                  depart: "14:30:00"
+                }]]></ee:set-payload>
+      </ee:message>
+    </ee:transform>
+  </flow>
+</mule>
+
+---------------------------- end of main.xml ------------------------------
+
+---------------------------- api.xml ------------------------------
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  #%L
+  MuleSoft Training - Anypoint Platform Development: Level 2
+  %%
+  Copyright (C) 2019 - 2021 MuleSoft, Inc. All rights reserved. http://www.mulesoft.com
+  %%
+  The software in this package is published under the terms of the
+  Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International Public License,
+  a copy of which has been included with this distribution in the LICENSE.txt file.
+  #L%
+  -->
+<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:secure-properties="http://www.mulesoft.org/schema/mule/secure-properties" xmlns:api-gateway="http://www.mulesoft.org/schema/mule/api-gateway" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:tls="http://www.mulesoft.org/schema/mule/tls" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="  http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd  http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd  http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd  http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd  http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/mule/api-gateway/current/mule-api-gateway.xsd  http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd  http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/schema/mule/secure-properties/current/mule-secure-properties.xsd">
+  <flow name="api-main">
+    <http:listener config-ref="apiHttpListenerConfig" path="/api/${api.majorVersion}/*">
+      <http:response statusCode="#[vars.httpStatus default 200]">
+        <http:headers>#[vars.outboundHeaders default {}]</http:headers>
+      </http:response>
+      <http:error-response statusCode="#[vars.httpStatus default 500]">
+        <http:body>#[payload]</http:body>
+        <http:headers>#[vars.outboundHeaders default {}]</http:headers>
+      </http:error-response>
+    </http:listener>
+    <apikit:router config-ref="apiConfig"/>
+    <error-handler ref="api-error-handler"/>
+  </flow>
+  <flow name="api-console">
+    <http:listener config-ref="apiHttpListenerConfig" path="/console/${api.majorVersion}/*">
+      <http:response statusCode="#[vars.httpStatus default 200]">
+        <http:headers>#[vars.outboundHeaders default {}]</http:headers>
+      </http:response>
+      <http:error-response statusCode="#[vars.httpStatus default 500]">
+        <http:body>#[payload]</http:body>
+        <http:headers>#[vars.outboundHeaders default {}]</http:headers>
+      </http:error-response>
+    </http:listener>
+    <apikit:console config-ref="apiConfig"/>
+    <error-handler ref="api-console-error-handler"/>
+  </flow>
+  <flow name="put:\tickets\(PNR)\checkin:application\json:apiConfig">
+    <ee:transform>
+      <ee:variables>
+        <ee:set-variable variableName="PNR">attributes.uriParams.PNR</ee:set-variable>
+      </ee:variables>
+    </ee:transform>
+    <flow-ref name="check-in-by-pnr" doc:name="check-in-by-pnr"/>
+		<error-handler >
+			<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="38916aee-03c0-4289-95c7-2f30261f7ef7" type="APP:LASTNAME_MISMATCH">
+				<set-payload value='#[output application/json&#10;---&#10;{&#10;	errorMessage: "Invalid passenger name or bad data uploaded"&#10;}]' doc:name="Invalid passenger name or bad data uploaded" doc:id="85dd23f4-1441-4c1d-8fea-89f728f9293b" />
+				<set-variable value="400" doc:name="httpStatus = 400" doc:id="22cf1ad9-a935-4adb-8f91-5ee1a21f748f" variableName="httpStatus"/>
+			</on-error-continue>
+		</error-handler>
+  
+</flow>
+  <flow name="put:\tickets\(PNR)\paymentApproval:application\json:apiConfig">
+    <ee:transform>
+      <ee:variables>
+        <ee:set-variable variableName="PNR">attributes.uriParams.PNR</ee:set-variable>
+      </ee:variables>
+    </ee:transform>
+    <flow-ref name="payment-approval-by-pnr" doc:name="payment-approval-by-pnr"/>
+  </flow>
+</mule>
+
+---------------------- global.xml----------------------------
 
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
@@ -145,43 +452,14 @@ output application/json
 			</http:authentication>
 		</http:request-connection>
 	</http:request-config>
+	<global-property doc:name="Global Property" doc:id="041d9162-49a2-47c2-b32f-aeb1e165bc9d" name="encrypt.key" value="************ PLEASE PROVIDE A CORRECT SECURITY KEY ****************" />
 
 </mule>
 
-**************************************
-
-************** check-in-flights-management ***************
-
-<flow name="check-in-flights-management">
-		<ee:transform doc:name="Transform Message" doc:id="3b9cf08a-f330-48b0-a9c5-7a1741b596b3" >
-			<ee:message >
-				<ee:set-payload ><![CDATA[%dw 2.0
-output application/json
----
-{
-	lastName:	vars.checkIn.lastName,
-	numBags:	vars.checkIn.numBags
-}]]></ee:set-payload>
-			</ee:message>
-		</ee:transform>
-		<http:request method="PUT" doc:name="checkIn" doc:id="ea202fa7-c54f-4cd3-a3ad-5a66973d6eaf" config-ref="flightsManagementSapiConfig" path="/tickets/{PNR}/checkin">
-			<http:uri-params ><![CDATA[#[output application/java
----
-{
-	PNR : vars.PNR
-}]]]></http:uri-params>
-		</http:request>
-
-  </flow>
 
 
-**********************************************************
-
-
-Day 2
-=====
-  
 Day 3
 =====
   
 Day 4
+=====
