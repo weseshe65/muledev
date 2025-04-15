@@ -487,6 +487,10 @@ ns ns0 http://flightsMgmt.sword.com/
 	}
 }
 
+{message: 'Passenger check-in successful.'}
+
+output application/java --- payload.body.checkInResponse.return as Boolean
+
 Day 3
 =====
   
