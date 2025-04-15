@@ -1,0 +1,209 @@
+{
+	"info": {
+		"_postman_id": "57714245-b10d-41ca-86fe-2f4f9120c1ef",
+		"name": "api-collaction",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "43059702",
+		"_collection_link": "https://crimson-meteor-854351.postman.co/workspace/Team-Workspace~bfadb43f-8f92-4a59-815b-3ba15a4025aa/collection/43059702-57714245-b10d-41ca-86fe-2f4f9120c1ef?action=share&source=collection_link&creator=43059702"
+	},
+	"item": [
+		{
+			"name": "/approval",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"payerID\": \"STJ8222K092ST\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:8081/api/v1/payments/PAY-1B56960729604235TKQQIYVY/approval",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"v1",
+						"payments",
+						"PAY-1B56960729604235TKQQIYVY",
+						"approval"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/payments",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"amount\": 12.34,\r\n    \"description\": \"something\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:8081/api/v1/payments",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"v1",
+						"payments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/checkin",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"lastName\": \"Mule\",\r\n    \"numBags\": 2\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:8081/api/v1/tickets/PNR123/checkin",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"v1",
+						"tickets",
+						"PNR123",
+						"checkin"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/alive",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:8081/alive",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"alive"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/paymentApproval",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"payerID\": \"PID1\",\r\n    \"paymentID\": \"PMT1\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:8081/api/v1/tickets/PNR123/paymentApproval",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"v1",
+						"tickets",
+						"PNR123",
+						"paymentApproval"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/PNR123/checkin",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"payerID\": \"PID1\",\r\n    \"paymentID\": \"PMT1\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:8081/api/v1/tickets/PNR123/checkin",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"v1",
+						"tickets",
+						"PNR123",
+						"checkin"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
