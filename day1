@@ -525,6 +525,10 @@ URL:            https://mq-us-east-1.anypoint.mulesoft.com/api/v1/organizations/
 client-id:      b58581e1242d4e10bdca4103cee00181
 client-secret:  b063BAe915a449A8A00AAe4f1e2aA3D4
 Exchange name:  cancelled-flights-exchg-dev  
+
+Queue name:		cancelled-flights-mobile-queue-dev-studentXX
+
+{ status: "Message received", content: payload, dateTime: now() }
   
 Day 4
 =====
