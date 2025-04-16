@@ -239,6 +239,11 @@ https://en.wikipedia.org/wiki/Robustness_principle
 #[ var ct = attributes.headers."content-type" --- ( not isBlank(ct) ) and ( lower(ct) contains "/xml" )  ]
 
 output text/plain --- payload.^raw
+
+
+#[ [ "VALIDATION" ] contains error.errorType.namespace ]
+
+output text/plain --- vars.originalPayload
   
 Day 4
 =====
