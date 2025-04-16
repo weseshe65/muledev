@@ -529,6 +529,8 @@ Exchange name:  cancelled-flights-exchg-dev
 Queue name:		cancelled-flights-mobile-queue-dev-studentXX
 
 { status: "Message received", content: payload, dateTime: now() }
+
+https://tngaa-flights-management-sapi-dev-9yj2rh.rajrd4-2.usa-e1.cloudhub.io/api/cancelFlight
   
 Day 4
 =====
