@@ -514,7 +514,8 @@ output application/json
 	pnr:					payload.CancellationNotification.PNR,
 	lastNameOfPassenger:	payload.CancellationNotification.PassengerLastName
 }  
-  
+
+Message has been processed from DLQ at #[ now() ]  
   
 Day 4
 =====
