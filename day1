@@ -506,6 +506,15 @@ Day 3
 =====
 
 { myMessage: payload, receiveddAt: now() }  
+
+%dw 2.0
+output application/json
+---
+{
+	pnr:					payload.CancellationNotification.PNR,
+	lastNameOfPassenger:	payload.CancellationNotification.PassengerLastName
+}  
+  
   
 Day 4
 =====
