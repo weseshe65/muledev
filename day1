@@ -520,6 +520,11 @@ https://github.com/mulesoft-catalyst
 
 Message has been processed from DLQ at #[ now() ]  
 https://github.com/mulesoft
+
+URL:            https://mq-us-east-1.anypoint.mulesoft.com/api/v1/organizations/a63e6d25-8aaf-4512-b36d-d91b90a55c4a/environments/129441e8-ae69-4cf9-a70b-cdabca4823ff
+client-id:      b58581e1242d4e10bdca4103cee00181
+client-secret:  b063BAe915a449A8A00AAe4f1e2aA3D4
+Exchange name:  cancelled-flights-exchg-dev  
   
 Day 4
 =====
