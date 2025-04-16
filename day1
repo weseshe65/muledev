@@ -504,6 +504,8 @@ POST
 
 Day 3
 =====
+
+{ myMessage: payload, receiveddAt: now() }  
   
 Day 4
 =====
