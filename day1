@@ -237,6 +237,8 @@ VM:CONNECTIVITY, VM:QUEUE_TIMEOUT
 https://en.wikipedia.org/wiki/Robustness_principle
 
 #[ var ct = attributes.headers."content-type" --- ( not isBlank(ct) ) and ( lower(ct) contains "/xml" )  ]
+
+output text/plain --- payload.^raw
   
 Day 4
 =====
