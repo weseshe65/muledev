@@ -290,6 +290,10 @@ output text/plain --- vars.originalPayload
         "lastNameOfPassenger": "Mule"
     }]
 }
-  
+  not lower(vars.ticket.ticketHolderLastName) == lower(vars.checkIn.lastName)
+
+not lower(vars.passenger.lastName) == lower(vars.checkIn.lastName)
+
+
 Day 4
 =====
