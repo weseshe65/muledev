@@ -554,3 +554,27 @@ mvn -B -f bom/pom.xml archetype:generate -DarchetypeGroupId=org.mule.tools -Darc
 </mule>
 
 
+
+id: Custom Message Logging
+name: Custom Message Logging
+description: Policy for logging messages
+category: Custom
+type: custom
+resourceLevelSupported: true
+encryptionSupported: false
+standalone: true
+requiredCharacteristics: []
+providedCharacteristics: []
+configuration: 
+  - propertyName: message
+    name: Message
+    description: |
+      Mule Expression for extracting information from the message to log. e.g. #[attributes.headers['id']]
+    type: expression
+    optional: false
+    
+mvn clean deploy
+
+custom connector
+
+mvn deploy -Pdeploy-to-exchange-v3  
