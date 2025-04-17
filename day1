@@ -298,3 +298,4 @@ not lower(vars.passenger.lastName) == lower(vars.checkIn.lastName)
 Day 4
 =====
 MULE:COMPOSITE_ROUTING
+error.errorMessage.payload.failures
