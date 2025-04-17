@@ -593,3 +593,24 @@ mvn clean deploy
 custom connector
 
 mvn deploy -Pdeploy-to-exchange-v3  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+curl -u 8682d1b8cb7e45fb9e67d4a675b83ea2:95a135Bb5ddd4Ef3A990abf577D7907D https://anypoint.mulesoft.com/accounts/api/me
