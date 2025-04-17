@@ -331,3 +331,10 @@ output application/json
 	"payerID": "STJ8222K092ST", 
 	"paymentID": "PAY-1B56960729604235TKQQIYVY" 
 }
+#[ [ "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR", "SERVICE_UNAVAILABLE", "TIMEOUT", "CONNECTIVITY" ] contains error.errorType.identifier ]
+
+#[ ( error.errorType.namespace == "HTTP" ) or ( [ "EXPRESSION", "STREAM_MEXIMUM_SIZE_EXCEEDED" ] contains  error.errorType.identifier ) ]
+
+#[vars.successful]
+
+
