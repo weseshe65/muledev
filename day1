@@ -307,3 +307,27 @@ compensationFlows
 payload.payerID
 
 output application/json --- { payerID: message.payload.payerID }
+
+%dw 2.0
+output application/json
+---
+{
+  PNR: 				vars.PNR,
+  airportArrive: 	payload.ticket.destination,
+  class: 		 	payload.ticket.class,
+  bagsCount: 	 	payload.checkIn.numBags,
+  lastName:			payload.ticket.ticketHolderLastName,
+  seat:				payload.ticket.seat,
+  flightDate:		payload.ticket.flightDate,
+  flight:			payload.ticket.flightNo,
+  boarding:			payload.ticket.boarding,
+  airportDepart:	payload.ticket.origin,
+  gate:				payload.ticket.gate,
+  depart:			payload.ticket.depart
+}
+
+
+{ 
+	"payerID": "STJ8222K092ST", 
+	"paymentID": "PAY-1B56960729604235TKQQIYVY" 
+}
