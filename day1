@@ -305,3 +305,5 @@ compensationFlows
 /payments/{PaymentID}/approval
 
 payload.payerID
+
+output application/json --- { payerID: message.payload.payerID }
