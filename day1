@@ -420,3 +420,79 @@ https://codeshare.io/5gAz0G
   </operation>
 </module>
 
+
+
+
+
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<!-- students: replace with your AP org ID -->
+		<groupId>87b06c71-0c48-4770-9fd5-06ee267c68fb</groupId>
+		<artifactId>solutions-parent-pom</artifactId>
+		<version>1.0.0</version>
+		<relativePath>../parent-pom/pom.xml</relativePath>
+	</parent>
+
+    <groupId>87b06c71-0c48-4770-9fd5-06ee267c68fb</groupId>
+    <artifactId>resilience-mule-extension</artifactId>
+    <packaging>mule-extension</packaging>
+    <version>1.0.0</version>
+
+    <name>Smart Connector: using mule components</name>
+    <description>A Mule extension done with pure Mule DSL that depends in the runtime operations (set-payload, set-variable, etc.)</description>
+
+
+    <properties>
+        <mule.version>${app.runtime.semver}</mule.version>
+        
+    </properties>
+
+
+    <dependencies>
+        <!--Needed to discover the 'xml-based' XmlExtensionLoader for smart connectors-->
+        <dependency>
+            <groupId>org.mule.runtime</groupId>
+            <artifactId>mule-module-extensions-xml-support</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <!--MUnit Dependencies-->
+        <dependency>
+            <groupId>com.mulesoft.munit</groupId>
+            <artifactId>munit-runner</artifactId>
+            <classifier>mule-plugin</classifier>
+            <version>${munit.version}</version>
+            <scope>test</scope>
+        </dependency>
+		
+		<dependency>
+			<groupId>org.mule.connectors</groupId>
+			<artifactId>mule-http-connector</artifactId>
+			<classifier>mule-plugin</classifier>
+		</dependency>
+		
+    </dependencies>
+
+    <build>
+      
+                
+
+        <plugins>
+            <plugin>
+                <groupId>org.mule.runtime.plugins</groupId>
+                <artifactId>mule-extensions-maven-plugin</artifactId>
+                <extensions>true</extensions>
+            </plugin>
+            <plugin>
+                <groupId>com.mulesoft.munit</groupId>
+                <artifactId>munit-extensions-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
+
