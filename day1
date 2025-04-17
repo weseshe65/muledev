@@ -299,3 +299,6 @@ Day 4
 =====
 MULE:COMPOSITE_ROUTING
 error.errorMessage.payload.failures
+
+vars.successfulRouteIndexes map vars.allCompensationFlows[$]
+compensationFlows
