@@ -233,6 +233,9 @@ output application/json
 
 VM:CONNECTIVITY, VM:QUEUE_TIMEOUT
 
+mvn -B -f bom/pom.xml archetype:generate -DarchetypeGroupId=org.mule.extensions -DarchetypeArtifactId=mule-extensions-xml-archetype -DarchetypeVersion=1.2.0 -DgroupId=<YOUR_ORG_ID> -DartifactId=resilience-mule-extension -DmuleConnectorName=resilience-mule-extension -DextensionName=resilience -Dpackage=. -DoutputDirectory=../
+
+
 
 https://en.wikipedia.org/wiki/Robustness_principle
 
