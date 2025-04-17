@@ -302,3 +302,6 @@ error.errorMessage.payload.failures
 
 vars.successfulRouteIndexes map vars.allCompensationFlows[$]
 compensationFlows
+/payments/{PaymentID}/approval
+
+payload.payerID
