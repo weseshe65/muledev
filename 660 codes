@@ -23,3 +23,6 @@ curl --request PUT \
   "numBags": 2
 }'
 -M-Danypoint.platform.gatekeeper=disabled
+
+-M-Danypoint.platform.client_id=
+-M-Danypoint.platform.client_secret=
