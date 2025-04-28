@@ -26,3 +26,10 @@ curl --request PUT \
 
 -M-Danypoint.platform.client_id=
 -M-Danypoint.platform.client_secret=
+
+anypoint.platform.client_id
+anypoint.platform.client_secret
+
+https://check-in-papi-app-ckvify.5sc6y6-3.usa-e2.cloudhub.io/api/tickets/PNR123/checkin
+
+https://www.nslookup.io/
