@@ -11,3 +11,6 @@ https://code.visualstudio.com/
 https://howhttps.works/why-do-we-need-https/
 https://aws.amazon.com/certificate-manager/
 https://letsencrypt.org/getting-started/
+Path = check-in-papi.p12
+Alias  = server
+Both passwords = mule12345
