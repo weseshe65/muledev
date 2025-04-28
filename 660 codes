@@ -22,3 +22,4 @@ curl --request PUT \
   "lastName": "Smith",
   "numBags": 2
 }'
+-M-Danypoint.platform.gatekeeper=disabled
