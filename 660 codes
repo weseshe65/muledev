@@ -14,3 +14,11 @@ https://letsencrypt.org/getting-started/
 Path = check-in-papi.p12
 Alias  = server
 Both passwords = mule12345
+curl --request PUT \
+  --url https://localhost:8081/api/tickets/PNR123/checkin \
+  --header 'Accept: application/json' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "lastName": "Smith",
+  "numBags": 2
+}'
