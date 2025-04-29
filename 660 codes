@@ -50,6 +50,11 @@ https://anypoint.mulesoft.com/accounts/api/me
 		<relativePath>../parent-pom/pom.xml</relativePath>
 	</parent>
 
+Creating Bom
+
+mvn clean package -Pgenerate-sbom -DskipTests
+
+
 check in implementation
 
 <?xml version="1.0" encoding="UTF-8"?>
