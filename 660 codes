@@ -356,3 +356,7 @@ mvn clean deploy -Pdeploy-to-exchange-v3
 						</cloudhub2Deployment>
 					</configuration>
 			</plugin>
+
+mvn clean deploy -DmuleDeploy
+mvn clean deploy -DmuleDeploy -Denvironment=dev -DapplicationName=
+mvn clean deploy -DmuleDeploy -Denvironment=dev -DapplicationName=check-in-automated -Dapi.manager.client_id=ZZZ -Dapi.manager.client_secret=ZZZ
