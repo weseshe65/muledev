@@ -42,3 +42,10 @@ https://docs.mulesoft.com/release-notes/mule-maven-plugin/mule-maven-plugin-4.5.
 
 https://docs.mulesoft.com/mule-runtime/latest/deploy-to-cloudhub-2
 https://anypoint.mulesoft.com/accounts/api/me
+
+	<parent>
+		<groupId>4852afe9-f6d5-4fb6-b02c-c34f1412afcc</groupId>
+		<artifactId>solutions-parent-pom</artifactId>
+		<version>1.0.0</version>
+		<relativePath>../parent-pom/pom.xml</relativePath>
+	</parent>
