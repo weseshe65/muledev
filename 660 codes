@@ -362,3 +362,132 @@ mvn clean deploy -DmuleDeploy -Denvironment=dev -DapplicationName=
 mvn clean deploy -DmuleDeploy -Denvironment=dev -DapplicationName=check-in-automated -Dapi.manager.client_id=ZZZ -Dapi.manager.client_secret=ZZZ
 
 https://github.com/pedes/cicd-cloudhub2-mule/tree/main
+
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>4852afe9-f6d5-4fb6-b02c-c34f1412afcc</groupId>
+		<artifactId>solutions-parent-pom</artifactId>
+		<version>1.0.0</version>
+		<relativePath>../parent-pom/pom.xml</relativePath>
+	</parent>
+
+	<groupId>4852afe9-f6d5-4fb6-b02c-c34f1412afcc</groupId>
+	<artifactId>check-in-papi-app</artifactId>
+	<version>1.0.0</version>
+	<packaging>mule-application</packaging>
+
+	<name>check-in-papi-app-v1</name>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-clean-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.mule.tools.maven</groupId>
+				<artifactId>mule-maven-plugin</artifactId>
+				<extensions>true</extensions>
+				<configuration>
+					<classifier>mule-application</classifier>
+						<cloudhub2Deployment>
+							<!-- URL of the control plane -->
+							<uri>https://anypoint.mulesoft.com</uri>
+							<!-- Inherited from the project metadata -->
+							<businessGroupId>${project.groupId}</businessGroupId>
+							<provider>MC</provider>
+							<environment>${environment}</environment>
+							<!-- Target Name as in the documentation US East Ohio -->
+							<target>Cloudhub-US-East-2</target>
+							<!-- mule version format muleruntime-java17 -->
+							<!-- If not provided, will choose the latest Edge version -->
+							<muleVersion>4.9.3:3e-java17</muleVersion>
+							
+							<!-- Alternative properties to indicate the mule and java version-->
+							<!-- <releaseChannel>EDGE</releaseChannel>
+							<javaVersion>${java.version}</javaVersion> -->
+
+							<!-- Authentication to do the deployment -->
+							<!-- Connected Apps, clientid and secret for CI Server -->
+							<!-- <connectedAppClientId>${ca_client_id}</connectedAppClientId>
+							<connectedAppClientSecret>${ca_client_secret}</connectedAppClientSecret>
+							<connectedAppGrantType>client_credentials</connectedAppGrantType> -->
+
+							<!-- The ID of the settings.xml server-->
+							<server>cloudhub-deploy</server>
+	
+							<applicationName>${applicationName}</applicationName>
+							<replicas>1</replicas>
+							<vCores>0.1</vCores>
+							<properties>
+								<anypoint.platform.client_id>${api.manager.client_id}</anypoint.platform.client_id>
+								<anypoint.platform.client_secret>${api.manager.client_secret}</anypoint.platform.client_secret>
+							</properties>
+							<secureProperties>
+								<message>This value is hidden</message>
+							</secureProperties>
+							<deploymentSettings>
+								<http>
+									<inbound>
+										<!-- set to true because the mule app use HTTPS certificates 
+											internally -->
+										<lastMileSecurity>true</lastMileSecurity>
+									</inbound>
+								</http>
+							</deploymentSettings>
+						</cloudhub2Deployment>
+					</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.mule.connectors</groupId>
+			<artifactId>mule-http-connector</artifactId>
+			<classifier>mule-plugin</classifier>
+		</dependency>
+		<dependency>
+			<groupId>org.mule.connectors</groupId>
+			<artifactId>mule-sockets-connector</artifactId>
+			<classifier>mule-plugin</classifier>
+		</dependency>
+		<dependency>
+			<groupId>4852afe9-f6d5-4fb6-b02c-c34f1412afcc</groupId>
+			<artifactId>check-in-papi</artifactId>
+			<version>1.0.0</version>
+			<classifier>oas</classifier>
+			<type>zip</type>
+		</dependency>
+		<dependency>
+			<groupId>org.mule.modules</groupId>
+			<artifactId>mule-apikit-module</artifactId>
+			<classifier>mule-plugin</classifier>
+		</dependency>
+	</dependencies>
+</project>
+
+Client Credentials
+Client ID:
+
+0ddc2e086c6f4726b5666c40a8979780
+
+Client secret:
+
+273Eeb06C6D745C5A1f9CB4a54c15351
+
+Connected app
+
+id
+6ff5329e912e48fbbecc375c0cfd0de9
+
+secret
+4022D944c9494ABc838f4e9631AF8A94
+
+
+mvn clean deploy -DmuleDeploy
+mvn clean deploy -DmuleDeploy -Denvironment=dev -DapplicationName=
+mvn clean deploy -DmuleDeploy -Denvironment=dev -DapplicationName=check-in-automated-2 -Dapi.manager.client_id=0ddc2e086c6f4726b5666c40a8979780 -Dapi.manager.client_secret=273Eeb06C6D745C5A1f9CB4a54c15351
