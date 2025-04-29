@@ -237,3 +237,20 @@ global-config
                               flowRef="api-main"/>
 
 </mule>
+
+config.yaml
+
+http:
+  host: "0.0.0.0"
+  port: "8081"
+
+tls:
+  keystore:
+    path: "check-in-papi.p12"
+    alias: "server"
+    password: "mule12345"
+    keyPassword: "mule12345"
+
+api:
+  gateway:
+    id: "20319423" 
