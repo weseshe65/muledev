@@ -301,3 +301,58 @@ https://docs.mulesoft.com/exchange/to-publish-assets-maven
 https://docs.mulesoft.com/access-management/permissions-by-product
 
 mvn clean deploy -Pdeploy-to-exchange-v3
+
+			<plugin>
+				<groupId>org.mule.tools.maven</groupId>
+				<artifactId>mule-maven-plugin</artifactId>
+				<extensions>true</extensions>
+				<configuration>
+					<classifier>mule-application</classifier>
+						<cloudhub2Deployment>
+							<!-- URL of the control plane -->
+							<uri>https://anypoint.mulesoft.com</uri>
+							<!-- Inherited from the project metadata -->
+							<businessGroupId>${project.groupId}</businessGroupId>
+							<provider>MC</provider>
+							<environment>${environment}</environment>
+							<!-- Target Name as in the documentation US East Ohio -->
+							<target>Cloudhub-US-East-2</target>
+							<!-- mule version format muleruntime-java17 -->
+							<!-- If not provided, will choose the latest Edge version -->
+							<muleVersion>4.9.3:3e-java17</muleVersion>
+							
+							<!-- Alternative properties to indicate the mule and java version-->
+							<!-- <releaseChannel>EDGE</releaseChannel>
+							<javaVersion>${java.version}</javaVersion> -->
+
+							<!-- Authentication to do the deployment -->
+							<!-- Connected Apps, clientid and secret for CI Server -->
+							<!-- <connectedAppClientId>${ca_client_id}</connectedAppClientId>
+							<connectedAppClientSecret>${ca_client_secret}</connectedAppClientSecret>
+							<connectedAppGrantType>client_credentials</connectedAppGrantType> -->
+
+							<!-- The ID of the settings.xml server-->
+							<server>cloudhub-deploy</server>
+	
+							<applicationName>${applicationName}</applicationName>
+							<replicas>1</replicas>
+							<vCores>0.1</vCores>
+							<properties>
+								<anypoint.platform.client_id>${api.manager.client_id}</anypoint.platform.client_id>
+								<anypoint.platform.client_secret>${api.manager.client_secret}</anypoint.platform.client_secret>
+							</properties>
+							<secureProperties>
+								<message>This value is hidden</message>
+							</secureProperties>
+							<deploymentSettings>
+								<http>
+									<inbound>
+										<!-- set to true because the mule app use HTTPS certificates 
+											internally -->
+										<lastMileSecurity>true</lastMileSecurity>
+									</inbound>
+								</http>
+							</deploymentSettings>
+						</cloudhub2Deployment>
+					</configuration>
+			</plugin>
