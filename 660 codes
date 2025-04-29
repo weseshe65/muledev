@@ -299,3 +299,5 @@ https://maven.apache.org/settings.html
 https://docs.mulesoft.com/exchange/connected-app-authentication
 https://docs.mulesoft.com/exchange/to-publish-assets-maven
 https://docs.mulesoft.com/access-management/permissions-by-product
+
+mvn clean deploy -Pdeploy-to-exchange-v3
