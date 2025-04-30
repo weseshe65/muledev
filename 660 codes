@@ -553,3 +553,13 @@ Assert that respose type is JSON
 
 MunitTools::withMediaType('application/json')
 
+https://docs.mulesoft.com/munit/latest/coverage-maven-concept#coverage-report-types
+
+mvn clean test
+mvn clean test -Dencrypt.key=secure12345
+mvn clean package -DskipTests
+
+MunitTools::getResourceAsString('example.csv')
+https://docs.mulesoft.com/munit/latest/resource-matchers-reference
+read(MunitTools::getResourceAsString('mocked-payment-approval-response.json'), 'application/json')
+
