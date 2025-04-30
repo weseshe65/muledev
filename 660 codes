@@ -543,3 +543,13 @@ https://docs.mulesoft.com/api-functional-monitoring/bat-command-reference
 
 successful-check-in-with-luggage
 
+Assert that the response payload is NOT NULL
+message.payload
+
+Assert that respose type is JSON
+
+<munit:payload value="#[{&#10;  &quot;lastName&quot;: &quot;Johnson&quot;,&#10;  &quot;numBags&quot;: 4&#10;}]"/>
+<munit:attributes value="#[{&#10;  &quot;headers&quot;: {&#10;    &quot;x-correlation-id&quot;: &quot;FAKE-uuid-88&quot;,&#10;    &quot;content-type&quot;: &quot;application/json&quot;,&#10;    &quot;user-agent&quot;: &quot;PostmanRuntime/7.29.2&quot;,&#10;    &quot;accept&quot;: &quot;*/*&quot;,&#10;    &quot;postman-token&quot;: &quot;3e97dfdf-0f08-4e44-b6a9-9af311a5c2da&quot;,&#10;    &quot;host&quot;: &quot;localhost:8082&quot;,&#10;    &quot;accept-encoding&quot;: &quot;gzip, deflate, br&quot;,&#10;    &quot;connection&quot;: &quot;keep-alive&quot;,&#10;    &quot;content-length&quot;: &quot;43&quot;&#10;  },&#10;  &quot;clientCertificate&quot;: null,&#10;  &quot;method&quot;: &quot;PUT&quot;,&#10;  &quot;scheme&quot;: &quot;https&quot;,&#10;  &quot;queryParams&quot;: {},&#10;  &quot;requestUri&quot;: &quot;/api/v1/tickets/ABC999/paymentApproval&quot;,&#10;  &quot;queryString&quot;: &quot;&quot;,&#10;  &quot;version&quot;: &quot;HTTP/1.1&quot;,&#10;  &quot;maskedRequestPath&quot;: &quot;/tickets/ABC999/paymentApproval&quot;,&#10;  &quot;listenerPath&quot;: &quot;/api/v1/*&quot;,&#10;  &quot;relativePath&quot;: &quot;/api/v1/tickets/ABC999/paymentApproval&quot;,&#10;  &quot;localAddress&quot;: &quot;/127.0.0.1:8082&quot;,&#10;  &quot;uriParams&quot;: {&#10;    &quot;PNR&quot;: &quot;ABC999&quot;&#10;  },&#10;  &quot;rawRequestUri&quot;: &quot;/api/v1/tickets/ABC999/paymentApproval&quot;,&#10;  &quot;rawRequestPath&quot;: &quot;/api/v1/tickets/ABC999/paymentApproval&quot;,&#10;  &quot;remoteAddress&quot;: &quot;/127.0.0.1:62811&quot;,&#10;  &quot;requestPath&quot;: &quot;/api/v1/tickets/ABC999/paymentApproval&quot;&#10;}]"/>
+
+MunitTools::withMediaType('application/json')
+
