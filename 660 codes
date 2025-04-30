@@ -568,3 +568,6 @@ read(MunitTools::getResourceAsString('mocked-payment-approval-response.json'), '
   “Checked-in” : “successful”
 }
 
+https://trailhead.salesforce.com/help?article=Salesforce-Certified-MuleSoft-Developer-II-Exam-Guide
+
+
