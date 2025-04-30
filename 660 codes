@@ -497,3 +497,5 @@ Day 3
 https://docs.mulesoft.com/mule-runtime/latest/secure-configuration-properties#secure_props_tool
 
 java -cp secure-properties-tool-j17.jar com.mulesoft.tools.SecurePropertiesTool file encrypt Blowfish CBC MYENCRYPTIONKEY config.yaml secure-properties.yaml
+
+https://secure-properties-api.us-e1.cloudhub.io/
