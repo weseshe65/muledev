@@ -517,3 +517,5 @@ https://gist.github.com/pedes/4f24673a2c4cb36f7b00c7a25771461d
 -M-Danypoint.platform.client_id=
 -M-Danypoint.platform.client_secret=
 -M-Dencrypt.key=secure12345
+
+https://en.wikipedia.org/wiki/Circuit_breaker_design_pattern
