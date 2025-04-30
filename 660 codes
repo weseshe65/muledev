@@ -562,4 +562,9 @@ mvn clean package -DskipTests
 MunitTools::getResourceAsString('example.csv')
 https://docs.mulesoft.com/munit/latest/resource-matchers-reference
 read(MunitTools::getResourceAsString('mocked-payment-approval-response.json'), 'application/json')
+{
+  "lastName": "Johnson",
+  "numBags": 4,
+  “Checked-in” : “successful”
+}
 
