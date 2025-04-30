@@ -498,4 +498,10 @@ https://docs.mulesoft.com/mule-runtime/latest/secure-configuration-properties#se
 
 java -cp secure-properties-tool-j17.jar com.mulesoft.tools.SecurePropertiesTool file encrypt Blowfish CBC MYENCRYPTIONKEY config.yaml secure-properties.yaml
 
+java -cp secure-properties-tool-j17.jar com.mulesoft.tools.SecurePropertiesTool file encrypt Blowfish CBC secure12345 config.yaml secure-properties.yaml
+
 https://secure-properties-api.us-e1.cloudhub.io/
+${encrypt.key}
+${secure::tls.keystore.keyPassword}
+
+-M-Dencrypt.key=secure12345
