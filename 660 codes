@@ -491,3 +491,7 @@ secret
 mvn clean deploy -DmuleDeploy
 mvn clean deploy -DmuleDeploy -Denvironment=dev -DapplicationName=
 mvn clean deploy -DmuleDeploy -Denvironment=dev -DapplicationName=check-in-automated-2 -Dapi.manager.client_id=0ddc2e086c6f4726b5666c40a8979780 -Dapi.manager.client_secret=273Eeb06C6D745C5A1f9CB4a54c15351
+
+Day 3
+
+https://docs.mulesoft.com/mule-runtime/latest/secure-configuration-properties#secure_props_tool
