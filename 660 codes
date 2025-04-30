@@ -509,4 +509,5 @@ ${secure::tls.keystore.keyPassword}
 https://landscape.cncf.io/
 
 https://prd-p-kr20y.splunkcloud.com/
-
+username: administrator
+password: administrator
